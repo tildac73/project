@@ -1,5 +1,4 @@
 #include "Building.h"
-#include <SFML/Graphics.hpp>
 #include <iostream>
 
 Building::Building(){
@@ -22,72 +21,6 @@ Building::Building(std::string buildingName, int buildingID, int cost, std::stri
 
 Building::~Building(){
     
-}
-
-/*void Building::display(){
-    sf::RenderWindow window(sf::VideoMode(200, 200), buildingName);
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Blue);
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-}*/
-
-void Building::display(){
-    // Create a window
-    sf::RenderWindow window(sf::VideoMode(800, 600), buildingName);
-
-    // Load an image
-    sf::Texture texture;
-    if (!texture.loadFromFile(imageName)) {
-        // Handle error if the image can't be loaded
-        std::cout << "image could not be loaded" << std::endl;
-    }
-
-    // Create a sprite and set its texture
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-
-    // Get the original size of the sprite
-    sf::Vector2u imageSize = texture.getSize();
-
-    // Calculate the scale factors to fit the sprite in the window
-    float scaleX = static_cast<float>(window.getSize().x) / imageSize.x;
-    float scaleY = static_cast<float>(window.getSize().y) / imageSize.y;
-
-    // Set the scale of the sprite to maintain aspect ratio and fill the window
-    sprite.setScale(scaleX, scaleY);
-
-    // Main loop
-    while (window.isOpen()) {
-        // Handle events
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-
-        // Clear the window
-        window.clear();
-
-        // Draw the sprite
-        window.draw(sprite);
-
-        // Display the content
-        window.display();
-    }
 }
 
 //getters

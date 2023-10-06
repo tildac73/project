@@ -10,8 +10,6 @@ public:
 
     ~Building(); //destructor
 
-    void display();
-
     //getters
     std::string get_buildingName();
     int get_buildingID();
@@ -29,11 +27,11 @@ public:
     void set_imageName(std::string imageName);
 
     std::string buildingName;
+    std::string imageName;
     int buildingID;
     int cost;
     int inventoryAmount; //contains the number of items which can be harvested
     bool activeState; //is the building currently displayed on screen - i.e. can it be interacted with?
-    std::string imageName;
 
 private:
 
