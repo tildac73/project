@@ -9,6 +9,7 @@ public:
     virtual void display();
     HUD();
     ~HUD();
+    void loadImages(std::string background, std::string item);
 
 private:
     std::vector<Building*> farms;

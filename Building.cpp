@@ -23,6 +23,10 @@ Building::~Building(){
     
 }
 
+void Building::addItem(){
+    itemAmount++;
+}
+
 //getters
 std::string Building::get_buildingName(){
     return buildingName;
@@ -48,6 +52,22 @@ std::string Building::get_imageName(){
     return imageName;
 }
 
+std::string Building::get_itemName(){
+    return itemName;
+}
+
+std::string Building::get_itemImage(){
+    return itemImage;
+}
+
+int Building::get_itemAmount(){
+    return itemAmount;
+}
+
+int Building::get_secondsToRenew(){
+    return secondsToRenew;
+}
+
 //setters
 void Building::set_buildingName(std::string buildingName){
     this->buildingName = buildingName;
@@ -71,4 +91,20 @@ void Building::set_activeState(bool activeState){
 
 void Building::set_imageName(std::string imageName){
     this->imageName = imageName;
+}
+
+void Building::set_itemName(std::string itemName){
+    this->itemName = itemName;
+}
+
+void Building::set_itemImage(std::string itemImage){
+    this->itemImage = itemImage;
+}
+
+void Building::set_itemAmount(int itemAmount){
+    this->itemAmount = itemAmount;
+}
+
+void Building::set_secondsToRenew(int secondsToRenew){
+    this->secondsToRenew = secondsToRenew;
 }

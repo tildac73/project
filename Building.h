@@ -10,6 +10,8 @@ public:
 
     ~Building(); //destructor
 
+    void addItem();
+    
     //getters
     std::string get_buildingName();
     int get_buildingID();
@@ -17,6 +19,11 @@ public:
     int get_inventoryAmount();
     bool get_activeState();
     std::string get_imageName();
+
+    std::string get_itemName();
+    std::string get_itemImage();
+    int get_itemAmount();
+    int get_secondsToRenew();
 
     //setters
     void set_buildingName(std::string buildingName);
@@ -26,12 +33,22 @@ public:
     void set_activeState(bool activeState);
     void set_imageName(std::string imageName);
 
+    void set_itemName(std::string itemName);
+    void set_itemImage(std::string itemImage);
+    void set_itemAmount(int itemAmount);
+    void set_secondsToRenew(int secondsToRenew);
+
     std::string buildingName;
     std::string imageName;
     int buildingID;
     int cost;
     int inventoryAmount; //contains the number of items which can be harvested
     bool activeState; //is the building currently displayed on screen - i.e. can it be interacted with?
+
+    std::string itemName;
+    std::string itemImage;
+    int itemAmount;
+    int secondsToRenew;
 
 private:
 
