@@ -60,6 +60,7 @@ void HUD::display() {
             }
         }
 
+//adds items to the farm as time passes
         sf::Time elapsed1 = clock.getElapsedTime();
 
         int timeInSeconds = elapsed1.asSeconds();
@@ -86,9 +87,12 @@ void HUD::display() {
         sf::Sprite item;
         item.setTexture(texture2);
         sf::Vector2u itemSize = texture2.getSize(); //gets size
-        float fixedItemWidth = 100.0f; // Set the desired width
+        float fixedItemWidth = 150.0f; // Set the desired width
         float scaleFactor = fixedItemWidth / itemSize.x;
         item.setScale(scaleFactor, scaleFactor);
+        float posX = static_cast<float>((window.getSize().x/5));
+        float posY = static_cast<float>((window.getSize().y/2.5));
+        item.setPosition(posX,posY);
 
         // scaling the background to fill the window
         sf::Vector2u imageSize = texture1.getSize();
@@ -96,21 +100,30 @@ void HUD::display() {
         float scaleY = static_cast<float>(window.getSize().y) / imageSize.y;
         background.setScale(scaleX, scaleY);
 
+        sf::Text itemAmount;
+
+        sf::Font MyFont;
+
+        // Load from a font file on disk
+        if (!MyFont.loadFromFile("ARLRDBD.ttf"))
+        {
+            // Error...
+        }
+        itemAmount.setFont(MyFont);
+        itemAmount.setCharacterSize(72);  // Font size
+        itemAmount.setFillColor(sf::Color::Black);  // Text color
+        itemAmount.setPosition(static_cast<float>((window.getSize().x/4.5)), static_cast<float>((window.getSize().y/1.3)));  // Position on the window  
+        itemAmount.setString(std::to_string(farms[currentFarmIndex]->get_itemAmount()));
+
          // Clear the window
         window.clear();
         window.draw(background);
 
-        for (int i = 0; i<farms[currentFarmIndex]->get_itemAmount(); i++){
-
-            float posX = static_cast<float>((window.getSize().x - 150.0f)-i*100);
-            float posY = static_cast<float>((window.getSize().y - 150.0f)-i*50);
-
-            // Set the item position
-            item.setPosition(posX, posY);
-
-            // Draw the item
+        if (farms[currentFarmIndex]->get_itemAmount() > 0){
             window.draw(item);
         }
+
+        window.draw(itemAmount);
 
         // Display the content
         window.display();
