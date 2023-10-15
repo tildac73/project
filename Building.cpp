@@ -8,6 +8,7 @@ Building::Building(){
     inventoryAmount = 0;
     activeState = false;
     imageName = "";
+    level = 1;
 }
 
 Building::Building(std::string buildingName, int buildingID, int cost, std::string imageName){
@@ -25,6 +26,12 @@ Building::~Building(){
 
 void Building::addItem(){
     itemAmount++;
+}
+
+void Building::levelUp(){
+    secondsToRenew = 0.8*secondsToRenew;
+    capacity++;
+    level++;
 }
 
 //getters
@@ -68,6 +75,18 @@ int Building::get_secondsToRenew(){
     return secondsToRenew;
 }
 
+int Building::get_level(){
+    return level;
+}
+
+int Building::get_itemValue(){
+    return itemValue;
+}
+
+int Building::get_capacity(){
+    return capacity;
+}
+
 //setters
 void Building::set_buildingName(std::string buildingName){
     this->buildingName = buildingName;
@@ -107,4 +126,16 @@ void Building::set_itemAmount(int itemAmount){
 
 void Building::set_secondsToRenew(int secondsToRenew){
     this->secondsToRenew = secondsToRenew;
+}
+
+void Building::set_level(int level){
+    this->level = level;
+}
+
+void Building::set_itemValue(int itemValue){
+    this->itemValue = itemValue;
+}
+
+void Building::set_capacity(int capacity){
+    this->capacity = capacity;
 }

@@ -11,6 +11,7 @@ public:
     ~Building(); //destructor
 
     void addItem();
+    void levelUp();
     
     //getters
     std::string get_buildingName();
@@ -25,6 +26,12 @@ public:
     int get_itemAmount();
     int get_secondsToRenew();
 
+    int get_level();
+
+    int get_itemValue();
+
+    int get_capacity();
+
     //setters
     void set_buildingName(std::string buildingName);
     void set_buildingID(int buildingID);
@@ -38,6 +45,12 @@ public:
     void set_itemAmount(int itemAmount);
     void set_secondsToRenew(int secondsToRenew);
 
+    void set_level(int level);
+
+    void set_itemValue(int itemValue);
+
+    void set_capacity(int capacity);
+
     std::string buildingName;
     std::string imageName;
     int buildingID;
@@ -49,6 +62,12 @@ public:
     std::string itemImage;
     int itemAmount;
     int secondsToRenew;
+
+    int level;
+
+    int itemValue;
+
+    int capacity;
 
 private:
 

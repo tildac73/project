@@ -1,18 +1,18 @@
-#include "Shop.h"
+#include "Market.h"
 #include <iostream>
 
-Shop::Shop(){
-    buildingName = "Shop";
+Market::Market(){
+    buildingName = "Market";
     cost = 0; //arbitrary cost
     buildingID = 0; //eventually change to the next ID in line
     inventoryAmount = 0;
     activeState = false;
-    imageName = "shop.png";
+    imageName = "market.png";
     itemName = "";
     itemImage = "Empty.png";
     itemAmount = 0;
 }
 
-Shop::~Shop(){
+Market::~Market(){
 
 }

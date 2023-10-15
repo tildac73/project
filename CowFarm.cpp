@@ -3,7 +3,7 @@
 
 CowFarm::CowFarm(){
     buildingName = "Cow Farm";
-    cost = 200; //arbitrary cost
+    cost = 20; //arbitrary cost
     buildingID = 2; 
     inventoryAmount = 0;
     activeState = false;
@@ -11,7 +11,9 @@ CowFarm::CowFarm(){
     itemName = "milk";
     itemImage = "milk.png";
     itemAmount = 0;
-    secondsToRenew = 2;
+    secondsToRenew = 5;
+    itemValue = 5;
+    capacity = 5;
 }
 
 CowFarm::~CowFarm(){

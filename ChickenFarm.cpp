@@ -12,6 +12,8 @@ ChickenFarm::ChickenFarm(){
     itemImage = "egg.png";
     itemAmount = 0;
     secondsToRenew = 1;
+    itemValue = 2;
+    capacity = 7;
 }
 
 ChickenFarm::~ChickenFarm(){

@@ -11,7 +11,9 @@ SheepFarm::SheepFarm(){
     itemName = "wool";
     itemImage = "wool.png";
     itemAmount = 0;
-    secondsToRenew = 5;
+    secondsToRenew = 20;
+    itemValue = 20;
+    capacity = 3;
 }
 
 SheepFarm::~SheepFarm(){
