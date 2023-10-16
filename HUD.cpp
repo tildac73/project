@@ -9,6 +9,7 @@
 #include "ChickenFarm.h"
 #include "UserProfile.h"
 #include "Market.h"
+#include <fstream>
 
 //creates a vector of the farms that will be displayed
 HUD::HUD() : currentFarmIndex(0) {
@@ -29,6 +30,78 @@ HUD::~HUD() {
 
 
 void HUD::display() {
+    UserProfile user;
+
+    std::ifstream inFile("save.txt");
+
+    if (inFile.is_open()) {
+        // Read lines from the file
+        std::string line;
+        if (std::getline(inFile, line)) {
+            farms[0]->set_capacity(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[0]->set_level(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[0]->set_cost(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[0]->set_itemAmount(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[0]->set_secondsToRenew(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[1]->set_capacity(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[1]->set_level(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[1]->set_cost(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[1]->set_itemAmount(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[1]->set_secondsToRenew(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[2]->set_capacity(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[2]->set_level(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[2]->set_cost(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[2]->set_itemAmount(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            farms[2]->set_secondsToRenew(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            user.set_wool(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            user.set_milk(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            user.set_eggs(std::stoi(line));
+        }
+        if (std::getline(inFile, line)) {
+            user.set_balance(std::stoi(line));
+        }
+        // Close the file when you're done
+        inFile.close();
+    } else {
+        std::cerr << "Failed to open the file for reading." << std::endl;
+    }
+
+    
+
     sf::Clock eggClock;//clock for the eggs
     sf::Clock milkClock;//clock for the milk
     sf::Clock woolClock;//clock for the wool
@@ -36,7 +109,7 @@ void HUD::display() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Idle Farm Tycoon"); //makes a window with the name as the building name
 
     
-    UserProfile user;
+    
 
     bool isTextBoxOpen = false;
 
@@ -44,6 +117,36 @@ void HUD::display() {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                std::ofstream outFile("save.txt");
+
+                if (outFile.is_open()) {
+
+                    // Write integers to consecutive lines
+                    outFile << farms[0]->get_capacity() << std::endl;
+                    outFile << farms[0]->get_level() << std::endl;
+                    outFile << user.get_chickenFarmCost() << std::endl;
+                    outFile << farms[0]->get_itemAmount() << std::endl;
+                    outFile << farms[0]->get_secondsToRenew() << std::endl;
+                    outFile << farms[1]->get_capacity() << std::endl;
+                    outFile << farms[1]->get_level() << std::endl;
+                    outFile << user.get_cowFarmCost() << std::endl;
+                    outFile << farms[1]->get_itemAmount() << std::endl;
+                    outFile << farms[1]->get_secondsToRenew() << std::endl;
+                    outFile << farms[2]->get_capacity() << std::endl;
+                    outFile << farms[2]->get_level() << std::endl;
+                    outFile << user.get_sheepFarmCost() << std::endl;
+                    outFile << farms[2]->get_itemAmount() << std::endl;
+                    outFile << farms[2]->get_secondsToRenew() << std::endl;
+                    outFile << user.get_wool() << std::endl;
+                    outFile << user.get_milk() << std::endl;
+                    outFile << user.get_eggs() << std::endl;
+                    outFile << user.get_balance() << std::endl;
+
+                    // Close the file when you're done
+                    outFile.close();
+                } else {
+                    std::cerr << "Failed to open the file for writing." << std::endl;
+                }
                 window.close();
             }
             else if (event.type == sf::Event::KeyPressed) {

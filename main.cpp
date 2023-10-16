@@ -4,10 +4,12 @@
 #include "SheepFarm.h"
 #include "CowFarm.h"
 #include "ChickenFarm.h"
+#include "HomeScreen.h"
 #include <iostream>
 #include <vector>
 
 int main(void){
-    HUD HUD;
-    HUD.display();
+
+    HomeScreen homescreen;
+    homescreen.display();
 }
