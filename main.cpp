@@ -4,6 +4,7 @@
 #include "SheepFarm.h"
 #include "CowFarm.h"
 #include "ChickenFarm.h"
+#include <iostream>
 #include <vector>
 
 int main(void){

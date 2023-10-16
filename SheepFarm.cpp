@@ -13,7 +13,7 @@ SheepFarm::SheepFarm(){
     itemAmount = 0;
     secondsToRenew = 20;
     itemValue = 20;
-    capacity = 3;
+    capacity = 2;
 }
 
 SheepFarm::~SheepFarm(){

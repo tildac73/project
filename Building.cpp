@@ -1,10 +1,10 @@
 #include "Building.h"
+#include "UserProfile.h"
 #include <iostream>
 
 Building::Building(){
     buildingName = "";
     buildingID = 0;
-    cost = 0;
     inventoryAmount = 0;
     activeState = false;
     imageName = "";

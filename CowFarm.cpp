@@ -11,9 +11,9 @@ CowFarm::CowFarm(){
     itemName = "milk";
     itemImage = "milk.png";
     itemAmount = 0;
-    secondsToRenew = 5;
+    secondsToRenew = 10;
     itemValue = 5;
-    capacity = 5;
+    capacity = 3;
 }
 
 CowFarm::~CowFarm(){

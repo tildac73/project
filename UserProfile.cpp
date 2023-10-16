@@ -15,6 +15,9 @@ UserProfile::UserProfile(){
     milk = 0;
     eggs = 0;
     balance = 0;
+    chickenFarmCost = 100;
+    cowFarmCost = 200;
+    sheepFarmCost = 400;
 }
 
 UserProfile::~UserProfile(){
@@ -41,6 +44,18 @@ void UserProfile::minusBalance(int amount){
     balance -= amount;
 }
 
+void UserProfile::chickenPriceLevel(){
+    chickenFarmCost = chickenFarmCost*1.5;
+}
+
+void UserProfile::cowPriceLevel(){
+    cowFarmCost = cowFarmCost*1.5;
+}
+
+void UserProfile::sheepPriceLevel(){
+    sheepFarmCost = sheepFarmCost*1.5;
+}
+
 int UserProfile::get_wool(){
     return wool;
 }
@@ -57,6 +72,18 @@ int UserProfile::get_balance(){
     return balance;
 }
 
+int UserProfile::get_chickenFarmCost(){
+    return chickenFarmCost;
+}
+
+int UserProfile::get_cowFarmCost(){
+    return cowFarmCost;
+}
+
+int UserProfile::get_sheepFarmCost(){
+    return sheepFarmCost;
+}
+
 void UserProfile::set_wool(int wool){
     this->wool = wool;
 }
@@ -71,4 +98,16 @@ void UserProfile::set_milk(int milk){
 
 void UserProfile::set_balance(int balance){
     this->balance = balance;
+}
+
+void UserProfile::set_chickenFarmCost(int chickenFarmCost){
+    this->chickenFarmCost = chickenFarmCost;
+}
+
+void UserProfile::set_cowFarmCost(int cowFarmCost){
+    this->cowFarmCost = cowFarmCost;
+}
+
+void UserProfile::set_sheepFarmCost(int sheepFarmCost){
+    this->sheepFarmCost = sheepFarmCost;
 }

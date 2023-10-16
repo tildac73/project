@@ -29,9 +29,10 @@ HUD::~HUD() {
 
 
 void HUD::display() {
-    sf::Clock clock;//check system time and check when last open
+    sf::Clock eggClock;//clock for the eggs
+    sf::Clock milkClock;//clock for the milk
+    sf::Clock woolClock;//clock for the wool
 
-    
     sf::RenderWindow window(sf::VideoMode(800, 600), "Idle Farm Tycoon"); //makes a window with the name as the building name
 
     
@@ -48,47 +49,55 @@ void HUD::display() {
             else if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     case sf::Keyboard::Left:
+                        if (isTextBoxOpen){
+                            isTextBoxOpen = false;
+                        }
                         currentFarmIndex = (currentFarmIndex - 1 + farms.size()) % farms.size();
                         break;
                     case sf::Keyboard::Right:
+                        if (isTextBoxOpen){
+                            isTextBoxOpen = false;
+                        }
                         currentFarmIndex = (currentFarmIndex + 1) % farms.size();
                         break;
                     case sf::Keyboard::E:
                     //checks if the screen is the market before selling the eggs, and adding to the balance. The same for the milk and wool
-                        if (farms[currentFarmIndex]->get_buildingName() == "Market"){
+                        if (farms[currentFarmIndex]->get_buildingName() == "Market" && user.get_eggs() != 0){
                             user.addBalance(5*user.get_eggs());
                             user.set_eggs(0);
                             isTextBoxOpen = true;
                         }else if (farms[currentFarmIndex]->get_buildingName() == "Shop"){
-                            if (farms[currentFarmIndex]->get_cost()<user.get_balance()){
-                                farms[currentFarmIndex]->levelUp();
-                                user.minusBalance(farms[currentFarmIndex]->get_cost());
-                                isTextBoxOpen = true;
+                            if (user.get_chickenFarmCost()<=user.get_balance()){
+                                user.minusBalance(user.get_chickenFarmCost());
+                                farms[0]->levelUp();
+                                user.chickenPriceLevel();
                             }
                         }
                         break;
                     case sf::Keyboard::M:
-                        if (farms[currentFarmIndex]->get_buildingName() == "Market"){
+                        if (farms[currentFarmIndex]->get_buildingName() == "Market" && user.get_milk() != 0){
                             user.addBalance(10*user.get_milk());
                             user.set_milk(0);
                             isTextBoxOpen = true;
                         }else if (farms[currentFarmIndex]->get_buildingName() == "Shop"){
-                            if (farms[currentFarmIndex]->get_cost()<user.get_balance()){
-                                farms[currentFarmIndex]->levelUp();
-                                user.minusBalance(farms[currentFarmIndex]->get_cost());
+                            if (user.get_cowFarmCost()<=user.get_balance()){
+                                user.minusBalance(user.get_cowFarmCost());                                
+                                farms[1]->levelUp();
+                                user.cowPriceLevel();
                             }
                             isTextBoxOpen = true;
                         }
                         break;
                     case sf::Keyboard::W:
-                        if (farms[currentFarmIndex]->get_buildingName() == "Market"){
+                        if (farms[currentFarmIndex]->get_buildingName() == "Market" && user.get_wool() != 0){
                             user.addBalance(20*user.get_wool());
                             user.set_wool(0);
                             isTextBoxOpen = true;
                         }else if (farms[currentFarmIndex]->get_buildingName() == "Shop"){
-                            if (farms[currentFarmIndex]->get_cost()<user.get_balance()){
-                                farms[currentFarmIndex]->levelUp();
-                                user.minusBalance(farms[currentFarmIndex]->get_cost());
+                            if (user.get_sheepFarmCost()<=user.get_balance()){
+                                user.minusBalance(user.get_sheepFarmCost());
+                                farms[2]->levelUp();
+                                user.sheepPriceLevel();
                             }
                             isTextBoxOpen = true;
                         }
@@ -109,18 +118,35 @@ void HUD::display() {
 }
 
 //adds items to the farm as time passes
-        sf::Time elapsed1 = clock.getElapsedTime();
+        sf::Time elapsedEggs = eggClock.getElapsedTime();
+        sf::Time elapsedMilk = milkClock.getElapsedTime();
+        sf::Time elapsedWool = woolClock.getElapsedTime();
 
-        float elapsedSeconds = elapsed1.asSeconds();
+        float eggSeconds = elapsedEggs.asSeconds();
+        float milkSeconds = elapsedMilk.asSeconds();
+        float woolSeconds = elapsedWool.asSeconds();
 
-        float farmRenewalSeconds = farms[currentFarmIndex]->get_secondsToRenew(); 
-        for (int i = 0; i<farms.size(); i++){
-            if (std::fmod(elapsedSeconds, farmRenewalSeconds) < 0.06) {
-
-                farms[i]->addItem();
+        if (eggSeconds > farms[0]->get_secondsToRenew()){
+            eggClock.restart();
+            if (farms[0]->get_itemAmount() < farms[0]->get_capacity()){
+                farms[0]->addItem();
             }
         }
-        
+
+        if (milkSeconds > farms[1]->get_secondsToRenew()){
+            milkClock.restart();
+            if (farms[1]->get_itemAmount() < farms[1]->get_capacity()){
+                farms[1]->addItem();
+            }
+
+        }
+
+        if (woolSeconds > farms[2]->get_secondsToRenew()){
+            woolClock.restart();
+            if (farms[2]->get_itemAmount() < farms[2]->get_capacity()){
+                farms[2]->addItem();
+            }
+        }
 
         // loads the image and makes it a sprite for the background
         sf::Texture texture1;
@@ -166,6 +192,119 @@ void HUD::display() {
         itemAmount.setPosition(static_cast<float>((window.getSize().x/4.5)), static_cast<float>((window.getSize().y/1.3)));  // Position on the window  
         itemAmount.setString(std::to_string(farms[currentFarmIndex]->get_itemAmount()));
 
+        //sets up the font to display the eggs amount
+        sf::Text eggsAmount;
+        eggsAmount.setFont(MyFont);
+        eggsAmount.setCharacterSize(72);  // Font size
+        eggsAmount.setFillColor(sf::Color::Black);  // Text color
+        eggsAmount.setString(std::to_string(user.get_eggs()));
+
+//sets up the font to display the eggs level
+        sf::Text eggsLevel;
+        eggsLevel.setFont(MyFont);
+        eggsLevel.setCharacterSize(72);  // Font size
+        eggsLevel.setFillColor(sf::Color::Black);  // Text color
+        eggsLevel.setString(std::to_string(farms[0]->get_level()));
+
+//sets up the font to display the chicken farm capacity
+        sf::Text eggsCapacity;
+        eggsCapacity.setFont(MyFont);
+        eggsCapacity.setCharacterSize(72);  // Font size
+        eggsCapacity.setFillColor(sf::Color::Black);  // Text color
+        eggsCapacity.setString(std::to_string(farms[0]->get_capacity()));
+
+//sets up the font to display the eggs price
+        sf::Text eggsPrice;
+        eggsPrice.setFont(MyFont);
+        eggsPrice.setCharacterSize(72);  // Font size
+        eggsPrice.setFillColor(sf::Color::Black);  // Text color
+        eggsPrice.setString(std::to_string(user.get_eggs()*farms[0]->get_itemValue()));
+
+//sets up the font to display the chicken farm price
+        sf::Text chickenFarmPrice;
+        chickenFarmPrice.setFont(MyFont);
+        chickenFarmPrice.setCharacterSize(55);  // Font size
+        chickenFarmPrice.setFillColor(sf::Color::Black);  // Text color
+        chickenFarmPrice.setString(std::to_string(user.get_chickenFarmCost()));
+
+//sets up the font to display the milk amount
+        sf::Text milkAmount;
+        milkAmount.setFont(MyFont);
+        milkAmount.setCharacterSize(72);  // Font size
+        milkAmount.setFillColor(sf::Color::Black);  // Text color
+        milkAmount.setString(std::to_string(user.get_milk()));
+
+//sets up the font to display the milk level
+        sf::Text milkLevel;
+        milkLevel.setFont(MyFont);
+        milkLevel.setCharacterSize(72);  // Font size
+        milkLevel.setFillColor(sf::Color::Black);  // Text color
+        milkLevel.setString(std::to_string(farms[1]->get_level()));
+
+//sets up the font to display the cow farm capacity
+        sf::Text milkCapacity;
+        milkCapacity.setFont(MyFont);
+        milkCapacity.setCharacterSize(72);  // Font size
+        milkCapacity.setFillColor(sf::Color::Black);  // Text color
+        milkCapacity.setString(std::to_string(farms[1]->get_capacity()));
+
+//sets up the font to display the milk price
+        sf::Text milkPrice;
+        milkPrice.setFont(MyFont);
+        milkPrice.setCharacterSize(72);  // Font size
+        milkPrice.setFillColor(sf::Color::Black);  // Text color
+        milkPrice.setString(std::to_string(user.get_milk()*farms[1]->get_itemValue()));
+
+//sets up the font to display the cow farm price
+        sf::Text cowFarmPrice;
+        cowFarmPrice.setFont(MyFont);
+        cowFarmPrice.setCharacterSize(55);  // Font size
+        cowFarmPrice.setFillColor(sf::Color::Black);  // Text color
+        cowFarmPrice.setString(std::to_string(user.get_cowFarmCost()));
+
+//sets up the font to display the wool amount
+        sf::Text woolAmount;
+        woolAmount.setFont(MyFont);
+        woolAmount.setCharacterSize(72);  // Font size
+        woolAmount.setFillColor(sf::Color::Black);  // Text color
+        woolAmount.setString(std::to_string(user.get_wool()));
+
+//sets up the font to display the wool level
+        sf::Text woolLevel;
+        woolLevel.setFont(MyFont);
+        woolLevel.setCharacterSize(72);  // Font size
+        woolLevel.setFillColor(sf::Color::Black);  // Text color
+        woolLevel.setString(std::to_string(farms[2]->get_level()));
+
+//sets up the font to display the sheep farm capacity
+        sf::Text woolCapacity;
+        woolCapacity.setFont(MyFont);
+        woolCapacity.setCharacterSize(72);  // Font size
+        woolCapacity.setFillColor(sf::Color::Black);  // Text color
+        woolCapacity.setString(std::to_string(farms[2]->get_capacity()));
+
+//sets up the font to display the wool price
+        sf::Text woolPrice;
+        woolPrice.setFont(MyFont);
+        woolPrice.setCharacterSize(72);  // Font size
+        woolPrice.setFillColor(sf::Color::Black);  // Text color
+        woolPrice.setString(std::to_string(user.get_wool()*farms[3]->get_itemValue()));
+
+//sets up the font to display the sheep farm price
+        sf::Text sheepFarmPrice;
+        sheepFarmPrice.setFont(MyFont);
+        sheepFarmPrice.setCharacterSize(55);  // Font size
+        sheepFarmPrice.setFillColor(sf::Color::Black);  // Text color
+        sheepFarmPrice.setString(std::to_string(user.get_sheepFarmCost()));
+
+//sets up the font to display the balance
+        sf::Text balance;
+        balance.setFont(MyFont);
+        balance.setCharacterSize(45);  // Font size
+        balance.setFillColor(sf::Color::Black);  // Text color
+        balance.setString(std::to_string(user.get_balance()));
+
+//drawing to the window
          // Clear the window
         window.clear();
         window.draw(background);
@@ -178,56 +317,121 @@ void HUD::display() {
         //ONLY DISPLAY THE ITEM AMOUNT ON SCREENS THAT REQUIRE IT
         if (farms[currentFarmIndex]->get_buildingName() != "Shop" && farms[currentFarmIndex]->get_buildingName() != "User Profile" && farms[currentFarmIndex]->get_buildingName() != "Market"){
             window.draw(itemAmount);
+            if (farms[currentFarmIndex]->get_buildingName() == "Cow Farm"){
+                milkLevel.setPosition(static_cast<float>((window.getSize().x/1.5)), static_cast<float>((window.getSize().y/2.5)));  // Position on the window  
+                window.draw(milkLevel);
+
+                milkCapacity.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/2.5)));  // Position on the window  
+                window.draw(milkCapacity);
+
+            }else if (farms[currentFarmIndex]->get_buildingName() == "Chicken Farm"){
+                eggsLevel.setPosition(static_cast<float>((window.getSize().x/1.5)), static_cast<float>((window.getSize().y/2.5)));  // Position on the window  
+                window.draw(eggsLevel);
+
+                eggsCapacity.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/2.5)));  // Position on the window  
+                window.draw(eggsCapacity);
+
+            }else if (farms[currentFarmIndex]->get_buildingName() == "Sheep Farm"){
+                woolLevel.setPosition(static_cast<float>((window.getSize().x/1.5)), static_cast<float>((window.getSize().y/2.5)));  // Position on the window  
+                window.draw(woolLevel);
+
+                woolCapacity.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/2.5)));  // Position on the window  
+                window.draw(woolCapacity);
+            }
         }
 
+//displaying item amount and balance on user profile
         if (farms[currentFarmIndex]->get_buildingName() == "User Profile"){
-            sf::Text eggsAmount;
-            eggsAmount.setFont(MyFont);
-            eggsAmount.setCharacterSize(72);  // Font size
-            eggsAmount.setFillColor(sf::Color::Black);  // Text color
-            eggsAmount.setPosition(static_cast<float>((window.getSize().x/2)), static_cast<float>((window.getSize().y/3.5)));  // Position on the window  
-            eggsAmount.setString(std::to_string(user.get_eggs()));
+            eggsAmount.setPosition(static_cast<float>((window.getSize().x/1.6)), static_cast<float>((window.getSize().y/3.3)));  // Position on the window  
             window.draw(eggsAmount);
 
-            sf::Text milkAmount;
-            milkAmount.setFont(MyFont);
-            milkAmount.setCharacterSize(72);  // Font size
-            milkAmount.setFillColor(sf::Color::Black);  // Text color
-            milkAmount.setPosition(static_cast<float>((window.getSize().x/2)), static_cast<float>((window.getSize().y/2.5)));  // Position on the window  
-            milkAmount.setString(std::to_string(user.get_milk()));
+            eggsLevel.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/3.3)));  // Position on the window  
+            window.draw(eggsLevel);
+
+            milkAmount.setPosition(static_cast<float>((window.getSize().x/1.6)), static_cast<float>((window.getSize().y/2.25)));  // Position on the window  
             window.draw(milkAmount);
 
-            sf::Text woolAmount;
-            woolAmount.setFont(MyFont);
-            woolAmount.setCharacterSize(72);  // Font size
-            woolAmount.setFillColor(sf::Color::Black);  // Text color
-            woolAmount.setPosition(static_cast<float>((window.getSize().x/2)), static_cast<float>((window.getSize().y/1.8)));  // Position on the window  
-            woolAmount.setString(std::to_string(user.get_wool()));
+
+            milkLevel.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/2.25)));  // Position on the window  
+            window.draw(milkLevel);
+
+            woolAmount.setPosition(static_cast<float>((window.getSize().x/1.6)), static_cast<float>((window.getSize().y/1.7)));  // Position on the window  
             window.draw(woolAmount);
 
-            sf::Text balance;
-            balance.setFont(MyFont);
-            balance.setCharacterSize(72);  // Font size
-            balance.setFillColor(sf::Color::Black);  // Text color
-            balance.setPosition(static_cast<float>((window.getSize().x/2)), static_cast<float>((window.getSize().y/1.3)));  // Position on the window  
-            balance.setString(std::to_string(user.get_balance()));
+            woolLevel.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/1.7)));  // Position on the window  
+            window.draw(woolLevel);
+
+            balance.setCharacterSize(45);  // Font size
+            balance.setPosition(static_cast<float>((window.getSize().x/1.45)), static_cast<float>((window.getSize().y/1.14)));  // Position on the window  
+            window.draw(balance);
+        }else if (farms[currentFarmIndex]->get_buildingName() == "Market"){
+            eggsAmount.setCharacterSize(55);  // Font size
+            eggsAmount.setPosition(static_cast<float>((window.getSize().x/1.4)), static_cast<float>((window.getSize().y/3.3)));  // Position on the window  
+            window.draw(eggsAmount);
+
+            eggsPrice.setCharacterSize(55);  // Font size
+            eggsPrice.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/3.3)));  // Position on the window  
+            window.draw(eggsPrice);
+
+            milkAmount.setCharacterSize(55);  // Font size
+            milkAmount.setPosition(static_cast<float>((window.getSize().x/1.4)), static_cast<float>((window.getSize().y/2.3)));  // Position on the window  
+            window.draw(milkAmount);
+
+            milkPrice.setCharacterSize(55);  // Font size
+            milkPrice.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/2.3)));  // Position on the window  
+            window.draw(milkPrice);
+
+            woolAmount.setCharacterSize(55);  // Font size
+            woolAmount.setPosition(static_cast<float>((window.getSize().x/1.4)), static_cast<float>((window.getSize().y/1.9)));  // Position on the window  
+            window.draw(woolAmount);
+
+            woolPrice.setCharacterSize(55);  // Font size
+            woolPrice.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/1.9)));  // Position on the window  
+            window.draw(woolPrice);
+
+
+            balance.setPosition(static_cast<float>((window.getSize().x/1.15)), static_cast<float>((window.getSize().y/1.2)));  // Position on the window  
+            window.draw(balance);
+        }else if (farms[currentFarmIndex]->get_buildingName() == "Shop"){
+            chickenFarmPrice.setPosition(static_cast<float>((window.getSize().x/1.6)), static_cast<float>((window.getSize().y/3.3)));  // Position on the window  
+            window.draw(chickenFarmPrice);
+
+            eggsLevel.setCharacterSize(55);  // Font size
+            eggsLevel.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/3.3)));  // Position on the window  
+            window.draw(eggsLevel);
+
+            cowFarmPrice.setPosition(static_cast<float>((window.getSize().x/1.6)), static_cast<float>((window.getSize().y/2.3)));  // Position on the window  
+            window.draw(cowFarmPrice);
+
+            milkLevel.setCharacterSize(55);
+            milkLevel.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/2.3)));  // Position on the window  
+            window.draw(milkLevel);
+
+            sheepFarmPrice.setPosition(static_cast<float>((window.getSize().x/1.6)), static_cast<float>((window.getSize().y/1.7)));  // Position on the window  
+            window.draw(sheepFarmPrice);
+
+            woolLevel.setCharacterSize(55);
+            woolLevel.setPosition(static_cast<float>((window.getSize().x/1.2)), static_cast<float>((window.getSize().y/1.7)));  // Position on the window  
+            window.draw(woolLevel);
+
+            balance.setPosition(static_cast<float>((window.getSize().x/1.55)), static_cast<float>((window.getSize().y/1.15)));  // Position on the window  
             window.draw(balance);
         }
 
         if (isTextBoxOpen){
             sf::RectangleShape rectangle;
             rectangle.setSize(sf::Vector2f(600, 50)); // Set the size of the rectangle
-            rectangle.setPosition(static_cast<float>((window.getSize().x/5)), static_cast<float>((window.getSize().y/4))); // Set the position of the top-left corner of the rectangle
-            rectangle.setFillColor(sf::Color::Red); // Set the fill color
+            rectangle.setPosition(static_cast<float>((window.getSize().x/6.5)), static_cast<float>((window.getSize().y/1.4))); // Set the position of the top-left corner of the rectangle
+            rectangle.setFillColor(sf::Color(195, 175, 205)); // Set the fill color
 
             window.draw(rectangle);
 
             sf::Text confirmation;
             confirmation.setFont(MyFont);
-            confirmation.setCharacterSize(30);  // Font size
+            confirmation.setCharacterSize(25);  // Font size
             confirmation.setFillColor(sf::Color::Black);  // Text color
-            confirmation.setPosition(static_cast<float>((window.getSize().x/5)), static_cast<float>((window.getSize().y/4)));  // Position on the window  
-            confirmation.setString("Successfully sold! Press Space to close");
+            confirmation.setPosition(static_cast<float>((window.getSize().x/6.5)), static_cast<float>((window.getSize().y/1.4)));  // Position on the window  
+            confirmation.setString("Transaction complete! Press Space to close");
             window.draw(confirmation);
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
