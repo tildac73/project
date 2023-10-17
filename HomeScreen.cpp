@@ -19,11 +19,11 @@ void HomeScreen::display(){
     }
 
     // Create text for menu items
-    sf::Text playText("Play", font, 36);
+    sf::Text loadSavedText("Load Saved Game", font, 36);
     sf::Text restartText("Restart", font, 36);
     sf::Text quitText("Quit", font, 36);
 
-    playText.setPosition(350, 200);
+    loadSavedText.setPosition(350, 200);
     restartText.setPosition(350, 300);
     quitText.setPosition(350, 400);
 
@@ -37,7 +37,7 @@ void HomeScreen::display(){
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     // Check if the mouse click is within the bounds of a menu item
                     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-                    if (playText.getGlobalBounds().contains(mousePos)) {
+                    if (loadSavedText.getGlobalBounds().contains(mousePos)) {
                         HUD HUD;
                         HUD.display();
                     } else if (restartText.getGlobalBounds().contains(mousePos)) {
@@ -80,7 +80,7 @@ void HomeScreen::display(){
         }
 
         window.clear();
-        window.draw(playText);
+        window.draw(loadSavedText);
         window.draw(restartText);
         window.draw(quitText);
         window.display();

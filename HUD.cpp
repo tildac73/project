@@ -10,6 +10,7 @@
 #include "UserProfile.h"
 #include "Market.h"
 #include <fstream>
+#include "Screen.h"
 
 //creates a vector of the farms that will be displayed
 HUD::HUD() : currentFarmIndex(0) {
@@ -23,8 +24,8 @@ HUD::HUD() : currentFarmIndex(0) {
 
 //clears the memory
 HUD::~HUD() {
-    for (Building* farm : farms) {
-        delete farm;
+    for (int i = 0; i < farms.size(); i++) {
+        delete farms[i];
     }
 }
 
