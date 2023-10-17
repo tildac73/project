@@ -7,8 +7,8 @@
 class Shop : public Building{
 public:
 
-    Shop();
-    ~Shop();
+    Shop(); //initiates the shop
+    ~Shop(); //deletes the shop
 
 private:
 

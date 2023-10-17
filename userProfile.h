@@ -6,19 +6,20 @@
 class UserProfile : public Building{
 public:
 
-    UserProfile();
-    ~UserProfile();
+    UserProfile(); //initiates the user profile
+    ~UserProfile(); //deletes the user profile
 
-    void addWool(int amount);
-    void addEggs(int amount);
-    void addMilk(int amount);
-    void addBalance(int amount);
-    void minusBalance(int amount);
-    void chickenPriceLevel();
-    void cowPriceLevel();
-    void sheepPriceLevel();
+    void addWool(int amount); //adds to the number of wool
+    void addEggs(int amount); // adds to the number of eggs
+    void addMilk(int amount); // adds to the number of milk
+    void addBalance(int amount); //increases the balances by the amount specified
+    void minusBalance(int amount); //decreases the balance by the amount specified
+    void chickenPriceLevel(); //increases the chicken farm cost
+    void cowPriceLevel(); //increases the cow farm cost
+    void sheepPriceLevel(); //increases the sheep price cost
 
-    int get_wool();
+//getters
+    int get_wool(); 
     int get_eggs();
     int get_milk();
     int get_balance();
@@ -26,6 +27,7 @@ public:
     int get_cowFarmCost();
     int get_sheepFarmCost();
 
+//setters
     void set_wool(int wool);
     void set_eggs(int eggs);
     void set_milk(int milk);

@@ -5,8 +5,8 @@
 class Instructions {
 
 public:
-    Instructions();
-    void display();
+    Instructions(); //initiates instructions
+    void display(); //displays the instruction screen
 
 private:
 

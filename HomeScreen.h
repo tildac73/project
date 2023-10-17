@@ -5,8 +5,8 @@
 class HomeScreen {
 
 public:
-    HomeScreen();
-    void display();
+    HomeScreen(); //Sets up the home screen
+    void display(); // used to display the home screen
 
 private:
 

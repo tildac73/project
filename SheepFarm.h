@@ -5,8 +5,8 @@
 
 class SheepFarm : public Building{
 public:
-    SheepFarm();
-    ~SheepFarm();
+    SheepFarm(); //initiates the sheep farm
+    ~SheepFarm(); //deletes the sheep farm
 
 private:
     

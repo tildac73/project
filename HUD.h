@@ -7,15 +7,13 @@
 
 class HUD{
 public:
-    virtual void display();
-    HUD();
-    ~HUD();
-    /*void loadImages(std::string background, std::string item);
-    sf::Text initialiseText(std::string font,int size,sf::Color colour,float posX, float posY,std::string string);
-*/
+    virtual void display(); //displays the main game
+    HUD(); //initiates the HUD
+    ~HUD(); //deletes the HUD
+
 private:
-    std::vector<Building*> farms;
-    int currentFarmIndex;
+    std::vector<Building*> farms; //the farm vector which contains the farms to switch between
+    int currentFarmIndex; //contains the index of the farm which is currently displayed
 };
 
 #endif

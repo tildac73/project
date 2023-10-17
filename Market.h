@@ -7,8 +7,8 @@
 class Market : public Building{
 public:
 
-    Market();
-    ~Market();
+    Market(); //initiates the market
+    ~Market(); //deletes the market
 
 private:
 
