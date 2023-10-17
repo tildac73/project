@@ -10,7 +10,8 @@ SRCS = main.cpp \
 	UserProfile.cpp \
 	Shop.cpp \
 	Market.cpp \
-	HomeScreen.cpp
+	HomeScreen.cpp \
+	Instructions.cpp
 
 LINK = -I"/opt/homebrew/Cellar/sfml/2.6.0/include" -L"/opt/homebrew/Cellar/sfml/2.6.0/lib" -lsfml-graphics -lsfml-window -lsfml-system
 
